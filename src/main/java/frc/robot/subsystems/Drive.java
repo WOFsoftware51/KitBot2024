@@ -61,9 +61,11 @@ public class Drive extends SubsystemBase {
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP); 
 
+
   // Odometry class for tracking robot pose
   private final DifferentialDriveOdometry m_odometry;
 
+  
   /** Creates a new DriveSubsystem. */
   public Drive() {
     // We need to invert one side of the drivetrain so that positive voltages
@@ -236,10 +238,8 @@ public class Drive extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-
+    m_odometry.update(m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition());
     
-    m_odometry.update(
-        m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition());
-        SmartDashboard.putNumber("Yaw", m_gyro.getRotation2d().getDegrees());
+    SmartDashboard.putNumber("Yaw", m_gyro.getRotation2d().getDegrees());
   }
 }

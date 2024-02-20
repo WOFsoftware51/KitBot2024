@@ -18,7 +18,7 @@ public class Shooter extends SubsystemBase {
 
   public Shooter() {}
 
-
+  //Main Commands
   public void shooterOn() {
     shooter1.set(1.0);
     shooter2.set(1.0);
@@ -34,6 +34,14 @@ public class Shooter extends SubsystemBase {
     shooter2.set(0.0);
   }
 
+  public void ampShooterOn() {
+    shooter1.set(0.27);
+    shooter2.set(0.27);
+
+  }
+
+
+  //PathPlanner Commands
   public Command shooterOnCommand(){
     return new InstantCommand(
       ()->shooterOn()
