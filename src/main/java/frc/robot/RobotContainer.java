@@ -17,6 +17,7 @@ import frc.robot.commands.FloorIntakeSPITCommand;
 import frc.robot.commands.ShooterAmpCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterTopIntakeCommand;
+import frc.robot.commands.GryoResetYAWCommand;
 // import frc.robot.subsystems.Amp;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FloorIntake;
@@ -56,6 +57,7 @@ public class RobotContainer {
 
 
     new Trigger(() -> m_controller0.getRightTriggerAxis()>0.8).whileTrue(new DriveBoostCommand()); //Boost
+    new Trigger (() -> m_controller0.getStartButton()).whileTrue(new GryoResetYAWCommand(m_drive)); //Reset Yaw
 
     new Trigger(() -> m_controller1.getBButton()).whileTrue(new FloorIntakeSPITCommand(m_floorIntake)); //Floor Spit
     new Trigger(() -> m_controller1.getXButton()).whileTrue(new FloorIntakeINTAKECommand(m_floorIntake)); //Floor Intake

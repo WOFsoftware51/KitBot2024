@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.GlobalVariables;
 import frc.robot.subsystems.FloorIntake;
 
 public class FloorIntakeINTAKECommand extends Command {
@@ -24,8 +25,14 @@ public class FloorIntakeINTAKECommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_floorIntake.floorIntakeFORWARD();
+    if(GlobalVariables.getSensorVal() == 1 &&  GlobalVariables.isShooting==false){
+      m_floorIntake.floorIntakeOff();
+    }
+    else{
+      m_floorIntake.floorIntakeFORWARD();
+    }
   }
+
 
   // Called once the command ends or is interrupted.
   @Override

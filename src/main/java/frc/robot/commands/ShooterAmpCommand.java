@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.GlobalVariables;
 import frc.robot.subsystems.Shooter;
 
 public class ShooterAmpCommand extends Command {
@@ -23,12 +24,14 @@ public class ShooterAmpCommand extends Command {
   @Override
   public void execute() {
     m_shooter.ampShooterOn();
+    GlobalVariables.isShooting = true;
   }
 
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
     m_shooter.shooterOff();
+    GlobalVariables.isShooting = false;
   }
 
   // Returns true when the command should end.

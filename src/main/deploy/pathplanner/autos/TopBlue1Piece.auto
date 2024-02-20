@@ -8,7 +8,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top-BlueToShoot"
+            "pathName": "TOP-BLUEtoShoot"
           }
         },
         {
@@ -44,7 +44,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top-BlueMove"
+            "pathName": "TOP-BLUEmove"
           }
         }
       ]

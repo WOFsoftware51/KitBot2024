@@ -5,33 +5,29 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Shooter;
+import frc.robot.subsystems.Drive;
 
-public class ShooterTopIntakeCommand extends Command {
-  private Shooter m_shooterIntake;
-  public ShooterTopIntakeCommand(Shooter shooterIntake) {
-    this.m_shooterIntake = shooterIntake;
-    addRequirements(m_shooterIntake);
+public class GryoResetYAWCommand extends Command {
+  public Drive m_drive;
+
+  public GryoResetYAWCommand(Drive drive) {
+    this.m_drive = drive;
+    addRequirements(m_drive);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
-    
+    m_drive.resetYaw();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-    m_shooterIntake.shooterIntakeOn();
- }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    m_shooterIntake.shooterOff();
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override

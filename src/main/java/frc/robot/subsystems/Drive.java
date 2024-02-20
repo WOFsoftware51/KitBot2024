@@ -39,6 +39,11 @@ public class Drive extends SubsystemBase {
 
   }
 
+
+  public void resetYaw() {
+    m_gyro.reset();
+  }
+
   
   //Brake
   public void brake(){
