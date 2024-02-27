@@ -7,6 +7,7 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.math.kinematics.DifferentialDriveWheelSpeeds;
@@ -14,13 +15,15 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.GlobalVariables;
 
 public class Drive extends SubsystemBase {
   // The motors on the left side of the drive.
-  private final static WPI_TalonSRX m_leftDrive = new WPI_TalonSRX(Constants.Mod1);
+  private final static WPI_TalonSRX m_leftDrive = new WPI_TalonSRX(Constants.Mod7);
   private final static WPI_TalonSRX m_leftDrive2 = new WPI_TalonSRX(Constants.Mod3);
 
   // The motors on the right side of the drive.
@@ -31,12 +34,13 @@ public class Drive extends SubsystemBase {
 
 
 
+
   public void drive(double leftY, double rightX){
     double getLeftY = Math.pow(leftY,3)*GlobalVariables.dSpeed;
     double getRightX = Math.pow(rightX,3)*Constants.rotationSpeed;
 
     m_robotDrive.curvatureDrive(getLeftY, getRightX,true);
-
+    m_robotDrive.feed();
   }
 
 
@@ -62,7 +66,12 @@ public class Drive extends SubsystemBase {
     m_rightDrive.setNeutralMode(NeutralMode.Coast);
   }
 
+  //PathPlanner Commands
+  public Command brakeCommand(){
+    return new InstantCommand(() -> brake());
+  }
 
+  
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP); 
 
@@ -76,19 +85,22 @@ public class Drive extends SubsystemBase {
     // We need to invert one side of the drivetrain so that positive voltages
     // result in both sides moving forward. Depending on how your robot's
     // gearbox is constructed, you might have to invert the left side instead.
+    m_leftDrive.setSafetyEnabled(true);
+    m_rightDrive.setSafetyEnabled(true);
     GlobalVariables.dSpeed = 0.6f;
     m_leftDrive2.follow((m_leftDrive));
     m_rightDrive2.follow(m_rightDrive);
     m_rightDrive.setInverted(true);
     m_leftDrive2.setInverted(false);
     m_rightDrive2.setInverted(true);
-    m_leftDrive2.setNeutralMode(NeutralMode.Coast);
-    m_rightDrive2.setNeutralMode(NeutralMode.Coast);
+    m_leftDrive.setNeutralMode(NeutralMode.Coast);
+    m_rightDrive.setNeutralMode(NeutralMode.Coast);
 
     resetEncoders();
     m_odometry =
         new DifferentialDriveOdometry(
-            m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition());
+            m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition(), new Pose2d(1.3, 5.55, new Rotation2d()));
+
 
           
    // All other subsystem initialization
@@ -110,7 +122,7 @@ public class Drive extends SubsystemBase {
               if (alliance.isPresent()) {
                 return alliance.get() == DriverStation.Alliance.Red;
               }
-              return false;
+              return true;
             },
             this // Reference to this subsystem to set requirements
     );
@@ -120,8 +132,12 @@ public class Drive extends SubsystemBase {
     return Constants.kinematics.toChassisSpeeds(getWheelSpeeds());
   }
 
-  public void driveRelative(ChassisSpeeds driveSupplier) {
-    m_robotDrive.curvatureDrive(driveSupplier.vxMetersPerSecond/Constants.maxSpeed, driveSupplier.omegaRadiansPerSecond/Constants.maxSpeed,true);
+  public void driveRelative(ChassisSpeeds dSup) {
+    double getLeftY = Math.pow(dSup.vxMetersPerSecond/Constants.maxSpeed,3)*GlobalVariables.dSpeed;
+    double getRightX = Math.pow(dSup.omegaRadiansPerSecond/Constants.maxSpeed,3)*Constants.rotationSpeed;
+
+    m_robotDrive.curvatureDrive(getLeftY, getRightX,true);
+    m_robotDrive.feed();
   }
   
 
@@ -179,6 +195,7 @@ public class Drive extends SubsystemBase {
     m_leftDrive2.setSelectedSensorPosition(0);
     m_rightDrive.setSelectedSensorPosition(0);
     m_rightDrive2.setSelectedSensorPosition(0);
+    m_robotDrive.feed();
   }
 
   /**
@@ -188,24 +205,6 @@ public class Drive extends SubsystemBase {
    */
   public double getAverageEncoderDistance() {
     return (m_leftDrive.getSelectedSensorPosition() + m_rightDrive.getSelectedSensorPosition()) / 2.0;
-  }
-
-  /**
-   * Gets the left drive encoder.
-   *
-   * @return the left drive encoder
-   */
-  public WPI_TalonSRX getLeftEncoder() {
-    return m_leftDrive;
-  }
-
-  /**
-   * Gets the right drive encoder.
-   *
-   * @return the right drive encoder
-   */
-  public WPI_TalonSRX getRightEncoder() {
-    return m_rightDrive;
   }
 
   /**
@@ -246,5 +245,8 @@ public class Drive extends SubsystemBase {
     m_odometry.update(m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition());
     
     SmartDashboard.putNumber("Yaw", m_gyro.getRotation2d().getDegrees());
+
+    SmartDashboard.putNumber("LeftDrive1", m_leftDrive.getSelectedSensorPosition());
+    SmartDashboard.putNumber("RightDrive1", m_rightDrive.getSelectedSensorPosition());
   }
 }

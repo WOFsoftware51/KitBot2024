@@ -8,7 +8,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TOP-BLUEtoShoot"
+            "pathName": "Middle-BLUEtoShoot"
           }
         },
         {
@@ -38,13 +38,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Top-BlueReverse"
+            "pathName": "Middle-BlueReverse"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "TOP-BLUEmove"
+            "pathName": "Middle-BLUEmove"
           }
         }
       ]

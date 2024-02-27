@@ -7,18 +7,17 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-// import frc.robot.commands.AmpIntakeCommand;
-// import frc.robot.commands.AmpShooterCommand;
 import frc.robot.commands.DriveBoostCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FloorIntakeINTAKECommand;
 import frc.robot.commands.FloorIntakeSPITCommand;
+import frc.robot.commands.GryoResetYAWCommand;
+import frc.robot.commands.ResetEncodersCommand;
 import frc.robot.commands.ShooterAmpCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterTopIntakeCommand;
-import frc.robot.commands.GryoResetYAWCommand;
-// import frc.robot.subsystems.Amp;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Shooter;
@@ -42,10 +41,17 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("ShooterOn", m_shooter.shooterOnCommand());
     NamedCommands.registerCommand("ShooterOff", m_shooter.shooterOffCommand());
+    NamedCommands.registerCommand("ResetEncoders", new ResetEncodersCommand(m_drive, m_floorIntake, m_shooter));
+    NamedCommands.registerCommand("IntakeOn", new FloorIntakeINTAKECommand(m_floorIntake));
+    NamedCommands.registerCommand("IntakeOff", m_floorIntake.intakeOff());
+    NamedCommands.registerCommand("BrakeModeOn", m_drive.brakeCommand());
+
+
 
     SmartDashboard.putData("Auton", autoChooser);
     autoChooser.setDefaultOption("TEST", 1);
     autoChooser.addOption("TopBlue", 2);
+      autoChooser.addOption("TEST-Auton", 3);
 
     configureButtonBindings();
   }
@@ -57,7 +63,9 @@ public class RobotContainer {
 
 
     new Trigger(() -> m_controller0.getRightTriggerAxis()>0.8).whileTrue(new DriveBoostCommand()); //Boost
-    new Trigger (() -> m_controller0.getStartButton()).whileTrue(new GryoResetYAWCommand(m_drive)); //Reset Yaw
+    new Trigger(() -> m_controller0.getStartButton()).whileTrue(new GryoResetYAWCommand(m_drive)); //Reset Yaw
+    new Trigger(() -> m_controller0.getStartButton()).whileTrue(new InstantCommand(()-> m_drive.resetOdometry(m_drive.getPose()))); //Reset Encoders
+
 
     new Trigger(() -> m_controller1.getBButton()).whileTrue(new FloorIntakeSPITCommand(m_floorIntake)); //Floor Spit
     new Trigger(() -> m_controller1.getXButton()).whileTrue(new FloorIntakeINTAKECommand(m_floorIntake)); //Floor Intake
@@ -73,6 +81,7 @@ public class RobotContainer {
     switch(autoChooser.getSelected()) {
       case 1: return AutoBuilder.buildAuto("TEST");
       case 2: return AutoBuilder.buildAuto("TopBuild");
+      case 3: return AutoBuilder.buildAuto("TEST-Auton");
 
       default: return AutoBuilder.buildAuto("TEST");
     }

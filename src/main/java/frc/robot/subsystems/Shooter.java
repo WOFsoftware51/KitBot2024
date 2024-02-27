@@ -25,8 +25,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void shooterIntakeOn(){
-    shooter1.set(-0.8);
-    shooter2.set(-0.8);
+    shooter1.set(-0.5);
+    shooter2.set(-0.5);
   }
 
   public void shooterOff() {
@@ -35,23 +35,24 @@ public class Shooter extends SubsystemBase {
   }
 
   public void ampShooterOn() {
-    shooter1.set(0.27);
-    shooter2.set(0.27);
+    shooter1.set(0.40);
+    shooter2.set(0.25);
 
   }
 
 
   //PathPlanner Commands
   public Command shooterOnCommand(){
-    return new InstantCommand(
-      ()->shooterOn()
-    );
+    return new InstantCommand(()->shooterOn());
   }
 
   public Command shooterOffCommand(){
-    return new InstantCommand(
-      ()->shooterOff()
-    );
+    return new InstantCommand(()->shooterOff());
+  }
+
+  public void resetEncoders() {
+    shooter1.setSelectedSensorPosition(0);
+    shooter2.setSelectedSensorPosition(0);
   }
 
 

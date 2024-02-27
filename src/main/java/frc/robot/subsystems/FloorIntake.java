@@ -6,11 +6,14 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class FloorIntake extends SubsystemBase {
-  private final WPI_TalonSRX floorIntake = new WPI_TalonSRX(Constants.Mod8);
+  private final WPI_TalonSRX floorIntake = new WPI_TalonSRX(Constants.floorIntake8);
 
   public FloorIntake() {}
   
@@ -26,8 +29,28 @@ public class FloorIntake extends SubsystemBase {
     floorIntake.set(0.0);
   }
 
+  public void resetEncoders() {
+    floorIntake.setSelectedSensorPosition(0);
+  }
+
+  //PathPlanner Commands
+  public Command intakeOn(){
+    return new InstantCommand(
+      ()->floorIntakeFORWARD()
+    );
+  } 
+
+    public Command intakeOff(){
+    return new InstantCommand(
+      ()->floorIntakeOff()
+    );
+  } 
+
+
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("floorIntake 8 Encoder", floorIntake.getSelectedSensorPosition());
   }
 }

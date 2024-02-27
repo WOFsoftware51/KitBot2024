@@ -2,19 +2,31 @@
   "version": 1.0,
   "startingPose": {
     "position": {
-      "x": 2.0,
-      "y": 7.0
+      "x": 1.92,
+      "y": 6.966115996641572
     },
-    "rotation": -88.92557156411756
+    "rotation": -90.0
   },
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ResetEncoders"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "BrakeModeOn"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "TEST"
+            "pathName": "TEST-Everything"
           }
         }
       ]
