@@ -13,7 +13,7 @@ import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
   private final static WPI_TalonSRX shooter1 = new WPI_TalonSRX(Constants.Mod5);
-  private final static WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.Mod1);
+  private final static WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.Mod6);
 
 
   public Shooter() {}
@@ -36,7 +36,7 @@ public class Shooter extends SubsystemBase {
 
   public void ampShooterOn() {
     shooter1.set(0.40); //40
-    shooter2.set(-0.15); //27 
+    shooter2.set(0.27); //-15
 
   }
 
