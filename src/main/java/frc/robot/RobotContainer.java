@@ -51,7 +51,7 @@ public class RobotContainer {
     SmartDashboard.putData("Auton", autoChooser);
     autoChooser.setDefaultOption("TEST", 1);
     autoChooser.addOption("TopBlue", 2);
-      autoChooser.addOption("TEST-Auton", 3);
+    autoChooser.addOption("TEST-Auton", 3);
 
     configureButtonBindings();
   }
