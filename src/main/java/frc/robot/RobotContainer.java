@@ -9,6 +9,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.commands.AmpPlatformBackwardsCommand;
+import frc.robot.commands.AmpPlatformForwardsCommand;
 import frc.robot.commands.DriveBoostCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FloorIntakeINTAKECommand;
@@ -18,6 +20,7 @@ import frc.robot.commands.ResetEncodersCommand;
 import frc.robot.commands.ShooterAmpCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterTopIntakeCommand;
+import frc.robot.subsystems.Amp;
 import frc.robot.subsystems.Drive;
 import frc.robot.subsystems.FloorIntake;
 import frc.robot.subsystems.Shooter;
@@ -25,7 +28,7 @@ import frc.robot.subsystems.Shooter;
 public class RobotContainer {
   private Drive m_drive = new Drive();
   private Shooter m_shooter = new Shooter();
-  // private Amp m_amp = new Amp();
+  private Amp m_amp = new Amp();
   private FloorIntake m_floorIntake = new FloorIntake();
 
   
@@ -63,7 +66,7 @@ public class RobotContainer {
 
 
     new Trigger(() -> m_controller0.getRightTriggerAxis()>0.8).whileTrue(new DriveBoostCommand()); //Boost
-    new Trigger(() -> m_controller0.getStartButton()).whileTrue(new GryoResetYAWCommand(m_drive)); //Reset Yaw
+    new Trigger(() -> m_controller0.getStartButton()).whileTrue(new InstantCommand(()-> m_drive.resetYaw())); //Reset Yaw
     new Trigger(() -> m_controller0.getStartButton()).whileTrue(new InstantCommand(()-> m_drive.resetOdometry(m_drive.getPose()))); //Reset Encoders
 
 
@@ -71,6 +74,9 @@ public class RobotContainer {
     new Trigger(() -> m_controller1.getXButton()).whileTrue(new FloorIntakeINTAKECommand(m_floorIntake)); //Floor Intake
     new Trigger(() -> m_controller1.getRightTriggerAxis()>0.8).whileTrue(new ShooterCommand(m_shooter)); //Shooter
     new Trigger(() -> m_controller1.getLeftTriggerAxis()>0.8).whileTrue(new ShooterTopIntakeCommand(m_shooter)); //Shooter Top Intake
+    new Trigger(() -> m_controller1.getLeftBumper()).whileTrue(new AmpPlatformForwardsCommand(m_amp)); //Amp Platform Forward
+    new Trigger(() -> m_controller1.getRightBumper()).whileTrue(new AmpPlatformBackwardsCommand(m_amp)); //Amp Platform Backwards
+
     new Trigger(() -> m_controller1.getAButton()).whileTrue(new ShooterAmpCommand(m_shooter)); //Amp Shooter
     
     // new Trigger(() -> m_controller1.getRightBumper()).whileTrue(new AmpShooterCommand(m_amp)); //Amp Shooter

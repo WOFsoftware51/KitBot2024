@@ -35,8 +35,8 @@ public class Shooter extends SubsystemBase {
   }
 
   public void ampShooterOn() {
-    shooter1.set(0.40); //40
-    shooter2.set(0.27); //-15
+    shooter1.set(0.35); //35
+    shooter2.set(0.27); //20
 
   }
 

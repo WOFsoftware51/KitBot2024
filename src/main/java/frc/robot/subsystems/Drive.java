@@ -1,3 +1,4 @@
+
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -5,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.util.ReplanningConfig;
-
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -99,7 +99,7 @@ public class Drive extends SubsystemBase {
     resetEncoders();
     m_odometry =
         new DifferentialDriveOdometry(
-            m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition(), new Pose2d(1.3, 5.55, new Rotation2d()));
+            m_gyro.getRotation2d(), m_leftDrive.getSelectedSensorPosition(), m_rightDrive.getSelectedSensorPosition());
 
 
           
@@ -113,17 +113,7 @@ public class Drive extends SubsystemBase {
             this::getCurrentSpeeds, // Current ChassisSpeeds supplier
             this::driveRelative, // Method that will drive the robot given ChassisSpeeds
             new ReplanningConfig(), // Default path replanning config. See the API for the options here
-            () -> {
-              // Boolean supplier that controls when the path will be mirrored for the red alliance
-              // This will flip the path being followed to the red side of the field.
-              // THE ORIGIN WILL REMAIN ON THE BLUE SIDE
-
-              var alliance = DriverStation.getAlliance();
-              if (alliance.isPresent()) {
-                return alliance.get() == DriverStation.Alliance.Red;
-              }
-              return true;
-            },
+            () -> false,
             this // Reference to this subsystem to set requirements
     );
   }
@@ -248,5 +238,9 @@ public class Drive extends SubsystemBase {
 
     SmartDashboard.putNumber("LeftDrive1", m_leftDrive.getSelectedSensorPosition());
     SmartDashboard.putNumber("RightDrive1", m_rightDrive.getSelectedSensorPosition());
+    SmartDashboard.putNumber("Pose X", getPose().getX());
+    SmartDashboard.putNumber("Pose Y", getPose().getY());
+    SmartDashboard.putNumber("Pose Rotation", getPose().getRotation().getDegrees());
+
   }
 }
