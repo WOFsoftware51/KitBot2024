@@ -7,8 +7,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Autos.MoveOutAuto;
+import frc.robot.Autos.OnePieceAuto;
+import frc.robot.Autos.TwoPieceAuto;
 import frc.robot.commands.AmpPlatformBackwardsCommand;
 import frc.robot.commands.AmpPlatformForwardsCommand;
 import frc.robot.commands.DriveBoostCommand;
@@ -42,19 +46,21 @@ public class RobotContainer {
   public RobotContainer() {
     // Register Named Commands
 
-    NamedCommands.registerCommand("ShooterOn", m_shooter.shooterOnCommand());
-    NamedCommands.registerCommand("ShooterOff", m_shooter.shooterOffCommand());
-    NamedCommands.registerCommand("ResetEncoders", new ResetEncodersCommand(m_drive, m_floorIntake, m_shooter));
-    NamedCommands.registerCommand("IntakeOn", new FloorIntakeINTAKECommand(m_floorIntake));
-    NamedCommands.registerCommand("IntakeOff", m_floorIntake.intakeOff());
-    NamedCommands.registerCommand("BrakeModeOn", m_drive.brakeCommand());
+    // NamedCommands.registerCommand("ShooterOn", m_shooter.shooterOnCommand());
+    // NamedCommands.registerCommand("ShooterOff", m_shooter.shooterOffCommand());
+    // NamedCommands.registerCommand("ResetEncoders", new ResetEncodersCommand(m_drive, m_floorIntake, m_shooter));
+    // NamedCommands.registerCommand("IntakeOn", new FloorIntakeINTAKECommand(m_floorIntake));
+    // NamedCommands.registerCommand("IntakeOff", m_floorIntake.intakeOff());
+    // NamedCommands.registerCommand("BrakeModeOn", m_drive.brakeCommand());
 
 
 
     SmartDashboard.putData("Auton", autoChooser);
-    autoChooser.setDefaultOption("TEST", 1);
-    autoChooser.addOption("TopBlue", 2);
-    autoChooser.addOption("TEST-Auton", 3);
+    autoChooser.addOption("TEST", 1);
+    autoChooser.setDefaultOption("One Piece", 2);
+    autoChooser.addOption("Move Out Auto", 3);
+    autoChooser.addOption("Two Piece", 4);
+
 
     configureButtonBindings();
   }
@@ -85,11 +91,13 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     switch(autoChooser.getSelected()) {
-      case 1: return AutoBuilder.buildAuto("TEST");
-      case 2: return AutoBuilder.buildAuto("TopBuild");
-      case 3: return AutoBuilder.buildAuto("TEST-Auton");
+      case 1: return Commands.print("No Auton For you");
+      case 2: return new OnePieceAuto(m_drive, m_floorIntake, m_shooter);
+      case 3: return new MoveOutAuto(m_drive);
+      case 4: return new TwoPieceAuto(m_drive, m_floorIntake, m_shooter);
 
-      default: return AutoBuilder.buildAuto("TEST");
+      default: return new OnePieceAuto(m_drive, m_floorIntake, m_shooter);
+
     }
 
   }

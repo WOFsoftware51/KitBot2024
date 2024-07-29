@@ -29,7 +29,7 @@ public class Amp extends SubsystemBase {
   }
 
   public void platformForwards() {
-    m_ampPlatform8.set(0.2);
+    m_ampPlatform8.set(0.23);
   }
   
   public void platformBackwards() {

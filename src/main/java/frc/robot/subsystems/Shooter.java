@@ -4,41 +4,57 @@
 
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class Shooter extends SubsystemBase {
-  private final static WPI_TalonSRX shooter1 = new WPI_TalonSRX(Constants.Mod5);
-  private final static WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.Mod6);
+  private final static WPI_TalonSRX shooter1 = new WPI_TalonSRX(Constants.shooter1);
+  private final static WPI_TalonSRX shooter2 = new WPI_TalonSRX(Constants.shooter2);
+  private final static TalonFX shooter3 = new TalonFX(Constants.shooter3);
 
 
-  public Shooter() {}
+
+  public Shooter() {
+    shooter3.setNeutralMode(NeutralModeValue.Coast);
+    shooter2.setNeutralMode(NeutralMode.Coast);
+    shooter1.setNeutralMode(NeutralMode.Coast);
+  }
 
   //Main Commands
-  public void shooterOn() {
+  public static void shooterOn() {
     shooter1.set(1.0);
     shooter2.set(1.0);
+    shooter3.set(1.0);
   }
 
   public void shooterIntakeOn(){
     shooter1.set(-0.5);
     shooter2.set(-0.5);
+    shooter3.set(-0.5);
   }
 
-  public void shooterOff() {
+  public static void shooterOff() {
     shooter1.set(0.0);
-    shooter2.set(0.0);
+    shooter2.set(0.0);  
+    shooter3.set(0.0);
   }
 
   public void ampShooterOn() {
     shooter1.set(0.35); //35
     shooter2.set(0.27); //20
-
+    shooter3.set(0.1); //20
   }
+  
 
 
   //PathPlanner Commands
@@ -60,5 +76,7 @@ public class Shooter extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+      // SmartDashboard.putNumber("Falcon Speed", shooter2.getVelocity().getValueAsDouble());
   }
 }
+  

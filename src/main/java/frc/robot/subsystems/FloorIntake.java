@@ -13,11 +13,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 
 public class FloorIntake extends SubsystemBase {
-  private final WPI_TalonSRX floorIntake = new WPI_TalonSRX(Constants.floorIntake1);
+  private final static WPI_TalonSRX floorIntake = new WPI_TalonSRX(Constants.floorIntake1);
 
   public FloorIntake() {}
   
-  public void floorIntakeFORWARD() {
+  public static void floorIntakeFORWARD() {
     floorIntake.set(0.65);
   }
   

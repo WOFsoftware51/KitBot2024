@@ -4,9 +4,13 @@
 
 package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.subsystems.Drive;
+import frc.robot.subsystems.FloorIntake;
+import frc.robot.subsystems.Shooter;
 
 
 /**
@@ -20,7 +24,7 @@ public class Robot extends TimedRobot {
 
   public Command autonomousCommand;
   public RobotContainer RobotContainer;
-   
+  public Timer m_timer;
 
   public Robot() {
 
@@ -37,6 +41,7 @@ public class Robot extends TimedRobot {
     // gearbox is constructed, you might have to invert the left side instead.
     
     RobotContainer = new RobotContainer();
+    m_timer = new Timer();
   }
 
   @Override
@@ -52,11 +57,51 @@ public class Robot extends TimedRobot {
     if(autonomousCommand != null) {
       autonomousCommand.schedule();
     }
+    // m_timer.reset();
   }
 
   /** This function is called periodically during autonomous. */
   @Override
   public void autonomousPeriodic() {
+//ONE PIECE
+    // if(m_timer.get() > 0.5) { //Charges up
+    //   Shooter.shooterOn();    
+    // }
+
+    // if(m_timer.get() > 1.5) { //Shoots
+    //   FloorIntake.floorIntakeFORWARD();
+    // }
+
+    // if(m_timer.get() > 4){
+    //   Drive.m_robotDrive.curvatureDrive(0.3, 0,true);
+    // }
+
+    // if(m_timer.get() > 10){
+    //   Drive.m_robotDrive.curvatureDrive(0.0, 0,true);
+    //   Shooter.shooterOff();    
+    // }
+
+//TWO PIECE
+    // if(m_timer.get() > 0.5) { //Charges up
+    //   Shooter.shooterOn();    
+    // }
+
+    // if(m_timer.get() > 1.5) { //Shoots
+    //   FloorIntake.floorIntakeFORWARD();
+    // }
+
+    // if()
+
+    // if(m_timer.get() > 4){
+    //   Drive.m_robotDrive.curvatureDrive(0.3, 0,true);
+    // }
+
+    // if(m_timer.get() > 10){
+    //   Drive.m_robotDrive.curvatureDrive(0.0, 0,true);
+    //   Shooter.shooterOff();    
+    // }
+
+
 
   }
 
@@ -71,7 +116,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during teleoperated mode. */
   @Override
   public void teleopPeriodic() {
-    SmartDashboard.putNumber("Sensor", GlobalVariables.getSensorVal());
+    // SmartDashboard.putNumber("Sensor", GlobalVariables.getSensorVal());
 
   }
 

@@ -25,7 +25,7 @@ public class ShooterCommand extends Command {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    m_shooter.shooterOn();
+    Shooter.shooterOn();
     GlobalVariables.isShooting = true;
   }
 

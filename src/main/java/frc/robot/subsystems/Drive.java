@@ -17,20 +17,24 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.GlobalVariables;
+import frc.robot.commands.Auton_Wait;
 
 public class Drive extends SubsystemBase {
   // The motors on the left side of the drive.
-  private final static WPI_TalonSRX m_leftDrive = new WPI_TalonSRX(Constants.Mod7);
-  private final static WPI_TalonSRX m_leftDrive2 = new WPI_TalonSRX(Constants.Mod3);
+  private final static WPI_TalonSRX m_leftDrive = new WPI_TalonSRX(Constants.leftDrive);
+  private final static WPI_TalonSRX m_leftDrive2 = new WPI_TalonSRX(Constants.leftDrive2);
 
   // The motors on the right side of the drive.
-  private final static WPI_TalonSRX m_rightDrive = new WPI_TalonSRX(Constants.Mod2);
-  private final static WPI_TalonSRX m_rightDrive2 = new WPI_TalonSRX(Constants.Mod4);
+  private final static WPI_TalonSRX m_rightDrive = new WPI_TalonSRX(Constants.rightDrive);
+  private final static WPI_TalonSRX m_rightDrive2 = new WPI_TalonSRX(Constants.rightDrive2);
 
-  private DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
+  public static DifferentialDrive m_robotDrive = new DifferentialDrive(m_leftDrive, m_rightDrive);
 
 
 
@@ -38,9 +42,13 @@ public class Drive extends SubsystemBase {
   public void drive(double leftY, double rightX){
     double getLeftY = Math.pow(leftY,3)*GlobalVariables.dSpeed;
     double getRightX = Math.pow(rightX,3)*Constants.rotationSpeed;
-
     m_robotDrive.curvatureDrive(getLeftY, getRightX,true);
     m_robotDrive.feed();
+  }
+
+    public void driveAuton(double speed){
+    m_leftDrive.set(speed);
+    m_rightDrive.set(speed);
   }
 
 
@@ -66,11 +74,17 @@ public class Drive extends SubsystemBase {
     m_rightDrive.setNeutralMode(NeutralMode.Coast);
   }
 
-  //PathPlanner Commands
+  //Commands
   public Command brakeCommand(){
     return new InstantCommand(() -> brake());
   }
 
+  public Command driveCommand(double speed, int time){
+    return new ParallelRaceGroup(
+      new RunCommand(() -> driveAuton(speed)),
+      new Auton_Wait(time)
+    );
+  }
   
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP); 
@@ -107,15 +121,15 @@ public class Drive extends SubsystemBase {
     // ...
 
     // Configure AutoBuilder last
-    AutoBuilder.configureRamsete(
-            this::getPose, // Robot pose supplier
-            this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
-            this::getCurrentSpeeds, // Current ChassisSpeeds supplier
-            this::driveRelative, // Method that will drive the robot given ChassisSpeeds
-            new ReplanningConfig(), // Default path replanning config. See the API for the options here
-            () -> false,
-            this // Reference to this subsystem to set requirements
-    );
+    // AutoBuilder.configureRamsete(
+    //         this::getPose, // Robot pose supplier
+    //         this::resetOdometry, // Method to reset odometry (will be called if your auto has a starting pose)
+    //         this::getCurrentSpeeds, // Current ChassisSpeeds supplier
+    //         this::driveRelative, // Method that will drive the robot given ChassisSpeeds
+    //         new ReplanningConfig(), // Default path replanning config. See the API for the options here
+    //         () -> false,
+    //         this // Reference to this subsystem to set requirements
+    // );
   }
 
   public ChassisSpeeds getCurrentSpeeds(){
