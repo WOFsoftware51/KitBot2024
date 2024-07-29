@@ -1,8 +1,5 @@
 package frc.robot;
 
-import com.pathplanner.lib.auto.AutoBuilder;
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -19,8 +16,6 @@ import frc.robot.commands.DriveBoostCommand;
 import frc.robot.commands.DriveCommand;
 import frc.robot.commands.FloorIntakeINTAKECommand;
 import frc.robot.commands.FloorIntakeSPITCommand;
-import frc.robot.commands.GryoResetYAWCommand;
-import frc.robot.commands.ResetEncodersCommand;
 import frc.robot.commands.ShooterAmpCommand;
 import frc.robot.commands.ShooterCommand;
 import frc.robot.commands.ShooterTopIntakeCommand;

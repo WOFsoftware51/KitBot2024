@@ -5,13 +5,10 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 
-import edu.wpi.first.wpilibj.motorcontrol.Talon;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -31,7 +28,7 @@ public class Shooter extends SubsystemBase {
   }
 
   //Main Commands
-  public static void shooterOn() {
+  public void shooterOn() {
     shooter1.set(1.0);
     shooter2.set(1.0);
     shooter3.set(1.0);
@@ -43,7 +40,7 @@ public class Shooter extends SubsystemBase {
     shooter3.set(-0.5);
   }
 
-  public static void shooterOff() {
+  public  void shooterOff() {
     shooter1.set(0.0);
     shooter2.set(0.0);  
     shooter3.set(0.0);

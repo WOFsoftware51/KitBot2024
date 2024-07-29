@@ -5,7 +5,6 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.subsystems.Amp;
 import frc.robot.subsystems.Shooter;
 
 public class AmpShooterCommand extends Command {
