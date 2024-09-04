@@ -25,7 +25,7 @@ public class OnePieceAuto extends SequentialCommandGroup {
       floorIntake.intakeOn(),
       new Auton_Wait(50),
       shooter.shooterOffCommand(),
-      drive.driveCommand(0.6, 75),
+      drive.driveCommand(0.6, 40),
       floorIntake.intakeOff(),
       drive.driveCommand(0, 100)
     ); //David Tostado is mid
